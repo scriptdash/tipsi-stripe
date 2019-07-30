@@ -12,6 +12,7 @@
 
 #import "TPSError.h"
 
+
 NSString * const kErrorKeyCode = @"errorCode";
 NSString * const kErrorKeyDescription = @"description";
 NSString * const kErrorKeyBusy = @"busy";
@@ -467,19 +468,22 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
 - (STPCardParams *)createCard:(NSDictionary *)params {
     STPCardParams *cardParams = [[STPCardParams alloc] init];
 
-    [cardParams setNumber: params[@"number"]];
-    [cardParams setExpMonth: [params[@"expMonth"] integerValue]];
-    [cardParams setExpYear: [params[@"expYear"] integerValue]];
-    [cardParams setCvc: params[@"cvc"]];
+    cardParams.number = params[@"number"];
+    cardParams.expMonth = [params[@"expMonth"] integerValue];
+    cardParams.expYear = [params[@"expYear"] integerValue];
+    cardParams.cvc = params[@"cvc"];
 
-    [cardParams setCurrency: params[@"currency"]];
-    [cardParams setName: params[@"name"]];
-    [cardParams setAddressLine1: params[@"addressLine1"]];
-    [cardParams setAddressLine2: params[@"addressLine2"]];
-    [cardParams setAddressCity: params[@"addressCity"]];
-    [cardParams setAddressState: params[@"addressState"]];
-    [cardParams setAddressCountry: params[@"addressCountry"]];
-    [cardParams setAddressZip: params[@"addressZip"]];
+    cardParams.currency = params[@"currency"];
+    cardParams.name = params[@"name"];
+
+    cardParams.address.line1 = params[@"addressLine1"];
+    cardParams.address.line2 = params[@"addressLine2"];
+    cardParams.address.city = params[@"addressCity"];
+    cardParams.address.state = params[@"addressState"];
+    cardParams.address.country = params[@"addressCountry"];
+
+    // TODO: Stripe renamed zip to postalCode, so we should we rename this attribute as well?
+    cardParams.address.postalCode = params[@"addressZip"];
 
     return cardParams;
 }
